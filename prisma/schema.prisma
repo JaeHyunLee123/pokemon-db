@@ -18,8 +18,9 @@ datasource db {
 model Pokemon {
   id Int @id
 
-  name  String
-  types String[]
+  name        String
+  description String
+  types       String[]
 
   frontImageUrl String
   backImageUrl  String
