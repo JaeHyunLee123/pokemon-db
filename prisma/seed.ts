@@ -5,7 +5,7 @@ import axios from "axios";
 
 const prisma = new PrismaClient();
 
-const createPocketmonImageUrl = ({
+const createPockemonImageUrl = ({
   id,
   isFront = true,
 }: {
@@ -48,8 +48,8 @@ async function main() {
       const types = pokemon.types.map((t: any) => t.type.name);
 
       // ✅ 이미지 URL
-      const frontImageUrl = createPocketmonImageUrl({ id: i, isFront: true });
-      const backImageUrl = createPocketmonImageUrl({ id: i, isFront: false });
+      const frontImageUrl = createPockemonImageUrl({ id: i, isFront: true });
+      const backImageUrl = createPockemonImageUrl({ id: i, isFront: false });
 
       // ✅ Prisma에 저장
       await prisma.pokemon.upsert({
