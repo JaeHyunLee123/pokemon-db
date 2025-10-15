@@ -14,3 +14,16 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
+
+model Pokemon {
+  id Int @id
+
+  name  String
+  types String[]
+
+  frontImageUrl String
+  backImageUrl  String
+
+  createtAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
