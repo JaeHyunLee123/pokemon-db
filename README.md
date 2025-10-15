@@ -14,3 +14,13 @@ NextJS와 Prisma를 사용한 포켓몬 정보 조회 웹사이트
 - [ ] 로그인 / 회원가입
 - [ ] 소셜 로그인
 - [ ] 북마크
+
+## 환경 변수
+
+```
+# Connect to Supabase via connection pooling
+DATABASE_URL=
+
+# Direct connection to the database. Used for migrations
+DIRECT_URL=
+```
