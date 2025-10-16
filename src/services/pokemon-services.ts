@@ -1,3 +1,4 @@
+import { pokemonPageSize } from "@/constants";
 import { pokemonRepository } from "@/repositories/pokemon-repository";
 import { PokemonList } from "@/types/api-response-types/pokemon-api-response-type";
 import { PokemonDetail } from "@/types/pokemon";
@@ -13,7 +14,8 @@ export const pokemonService = {
 
     // nextCursor 계산
     const lastPokemon = pokemons[pokemons.length - 1];
-    const nextCursor = lastPokemon ? lastPokemon.id + 1 : safeCursor;
+    const nextCursor =
+      pokemons.length >= pokemonPageSize ? lastPokemon.id + 1 : undefined;
 
     return {
       nextCursor,
