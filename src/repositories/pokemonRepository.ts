@@ -1,5 +1,5 @@
 import prisma from "@/libs/prisma";
-import { Pokemon } from "@/types/pokemon";
+import { Pokemon, PokemonDetail } from "@/types/pokemon";
 
 export const pokemonRepository = {
   async findList(cursor = 1, name?: string): Promise<Pokemon[]> {
@@ -28,5 +28,15 @@ export const pokemonRepository = {
     });
 
     return pokemons;
+  },
+
+  async findById(id: number): Promise<PokemonDetail | null> {
+    const pokemon = await prisma.pokemon.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    return pokemon;
   },
 };
