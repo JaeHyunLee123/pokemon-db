@@ -35,6 +35,14 @@ export const pokemonRepository = {
       where: {
         id,
       },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        frontImageUrl: true,
+        backImageUrl: true,
+        types: true,
+      },
     });
 
     return pokemon;
