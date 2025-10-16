@@ -5,7 +5,7 @@ NextJS와 Prisma를 사용한 포켓몬 정보 조회 웹사이트
 ## 구현 기능
 
 - [ ] 포켓몬 정보 홈 조회
-  - [ ] Data Seeding
+  - [x] Data Seeding
   - [ ] SSR + CSR
   - [ ] Infinite Scroll
   - [ ] Virtual List
