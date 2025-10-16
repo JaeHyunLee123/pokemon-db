@@ -1,4 +1,4 @@
-import { pokemonRepository } from "@/repositories/pokemonRepository";
+import { pokemonRepository } from "@/repositories/pokemon-repository";
 import { PokemonList } from "@/types/api-response-types/pokemon-api-response-type";
 import { PokemonDetail } from "@/types/pokemon";
 

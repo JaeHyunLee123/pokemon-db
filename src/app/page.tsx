@@ -1,4 +1,4 @@
-import { pokemonService } from "@/services/pokemonServices";
+import { pokemonService } from "@/services/pokemon-services";
 import Image from "next/image";
 
 export default async function Home() {
