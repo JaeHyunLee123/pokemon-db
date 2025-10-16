@@ -1,3 +1,4 @@
+import { pokemonPageSize } from "@/constants";
 import prisma from "@/libs/prisma";
 import { Pokemon, PokemonDetail } from "@/types/pokemon";
 
@@ -18,7 +19,7 @@ export const pokemonRepository = {
       cursor: {
         id: cursor,
       },
-      take: 20,
+      take: pokemonPageSize,
       skip: 0,
       select: {
         id: true,
