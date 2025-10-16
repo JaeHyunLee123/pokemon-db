@@ -1,14 +1,14 @@
-import { pokemonRepository } from "@/repositories/pokemonRepository";
+import { pokemonService } from "@/services/pokemonServices";
 import Image from "next/image";
 
 export default async function Home() {
-  const pokemons = await pokemonRepository.findList(5, "구리");
+  const pokemons = await pokemonService.getList(5, "구리");
 
-  const pokemonDetail = await pokemonRepository.findById(1);
+  const pokemonDetail = await pokemonService.getById(1);
 
   return (
     <div className="flex flex-col p-10 gap-2">
-      {pokemons.map((pokemon) => (
+      {pokemons.pokemons.map((pokemon) => (
         <span key={pokemon.id}>{pokemon.name}</span>
       ))}
       <div>
