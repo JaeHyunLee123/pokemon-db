@@ -1,5 +1,3 @@
-export const runtime = "nodejs";
-
 import PokemonCard from "@/components/PokemonCard";
 import { pokemonService } from "@/services/pokemon-services";
 
