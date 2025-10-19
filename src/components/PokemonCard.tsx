@@ -1,5 +1,6 @@
 import { Pokemon } from "@/types/pokemon";
 import Image from "next/image";
+import Link from "next/link";
 
 interface PokemonCardProps {
   pokemon: Pokemon;
@@ -18,7 +19,12 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
         width={90}
         height={90}
       />
-      <span className="text-lg font-medium">{pokemon.name}</span>
+      <Link href={`/${pokemon.id}`}>
+        <span className="text-lg font-medium hover:underline hover:font-semibold">
+          {pokemon.name}
+        </span>
+      </Link>
+
       <div className="w-full absolute bottom-0">
         <div className="h-2 bg-black" />
         <div className="h-2 bg-red-500" />
