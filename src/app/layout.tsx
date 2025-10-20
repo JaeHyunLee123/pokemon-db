@@ -35,7 +35,6 @@ export default function RootLayout({
       <body
         className={`${neodgm.className} ${geistSans.variable} ${geistMono.variable} antialiased `}
       >
-        {" "}
         <Providers>
           <Header />
           <main className="min-h-screen bg-neutral-300">{children}</main>
