@@ -22,7 +22,7 @@ export default function PokemonList() {
   }
 
   return (
-    <div className="flex flex-col justify-start items-center gap-10">
+    <div className="flex flex-col justify-start items-center gap-10 max-w-4xl">
       <section className="gap-2 flex items-start justify-center flex-wrap w-full">
         {data ? (
           data.pages.map((group, i) => (
