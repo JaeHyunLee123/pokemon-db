@@ -13,10 +13,13 @@ interface PokemonListProps {
 
 export default function PokemonList({ initialPokemonData }: PokemonListProps) {
   const initialInfiniteData: InfiniteData<PokemonListType, number | undefined> =
-    {
-      pageParams: [initialPokemonData.nextCursor],
-      pages: [initialPokemonData],
-    };
+    React.useMemo(
+      () => ({
+        pageParams: [1],
+        pages: [initialPokemonData],
+      }),
+      [initialPokemonData]
+    );
 
   const { data, isPending, hasNextPage, isFetchingNextPage, fetchNextPage } =
     useInfinitePokemon("", {
