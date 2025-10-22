@@ -6,19 +6,25 @@ import {
 } from "@tanstack/react-query";
 import axios from "axios";
 
-export default function useInfinitePokemon(
-  searchParam?: string,
-  options?: UseInfiniteQueryOptions<
+// ✅ 외부에서 넘길 수 없는 옵션 제거 (내부에서 고정할 값들)
+type UseInfinitePokemonOptions = Omit<
+  UseInfiniteQueryOptions<
     PokemonList,
     Error,
     InfiniteData<PokemonList>,
     readonly unknown[],
     number | undefined
-  >
+  >,
+  "queryKey" | "queryFn" | "getNextPageParam" | "initialPageParam"
+>;
+
+export default function useInfinitePokemon(
+  searchParam?: string,
+  options?: UseInfinitePokemonOptions
 ) {
   return useInfiniteQuery({
-    queryKey: ["pokemon", searchParam ?? ""],
-    queryFn: async ({ pageParam }) => {
+    queryKey: ["pokemon", searchParam ?? ""], // 외부에서 못 바꾸도록 내부 고정
+    queryFn: async ({ pageParam = 1 }) => {
       const res = await axios.get("/api/pokemon", {
         params: {
           cursor: pageParam,
@@ -26,14 +32,10 @@ export default function useInfinitePokemon(
         },
       });
 
-      return res.data;
+      return res.data as PokemonList;
     },
     getNextPageParam: (lastPage) => {
-      if (!lastPage.nextCursor) {
-        return null;
-      }
-
-      return lastPage.nextCursor;
+      return lastPage.nextCursor ?? undefined;
     },
     initialPageParam: 1,
     ...options,
