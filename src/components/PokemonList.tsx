@@ -3,11 +3,28 @@
 import PokemonCard from "@/components/PokemonCard";
 import useInfinitePokemon from "@/hooks/api/useInfinitePokemon";
 import useObserver from "@/hooks/useObserver";
+import { PokemonList as PokemonListType } from "@/types/api-response-types/pokemon-api-response-type";
+import { InfiniteData } from "@tanstack/react-query";
 import React from "react";
 
-export default function PokemonList() {
+interface PokemonListProps {
+  initialPokemonData: PokemonListType;
+}
+
+export default function PokemonList({ initialPokemonData }: PokemonListProps) {
+  const initialInfiniteData: InfiniteData<PokemonListType, number | undefined> =
+    React.useMemo(
+      () => ({
+        pageParams: [1],
+        pages: [initialPokemonData],
+      }),
+      [initialPokemonData]
+    );
+
   const { data, isPending, hasNextPage, isFetchingNextPage, fetchNextPage } =
-    useInfinitePokemon();
+    useInfinitePokemon("", {
+      initialData: initialInfiniteData,
+    });
 
   const onObserverIntersection = () => {
     if (hasNextPage) {
