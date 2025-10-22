@@ -1,9 +1,12 @@
 import PokemonList from "@/components/PokemonList";
+import { pokemonService } from "@/services/pokemon-services";
 
 export default async function Home() {
+  const initialPokemonList = await pokemonService.getList();
+
   return (
     <div className="p-10 flex justify-center">
-      <PokemonList />
+      <PokemonList initialPokemonData={initialPokemonList} />
     </div>
   );
 }
