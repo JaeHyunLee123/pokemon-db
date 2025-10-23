@@ -1,5 +1,6 @@
 "use client";
 
+import Loading from "@/components/Loading";
 import PokemonCard from "@/components/PokemonCard";
 import useInfinitePokemon from "@/hooks/api/useInfinitePokemon";
 import useObserver from "@/hooks/useObserver";
@@ -35,7 +36,7 @@ export default function PokemonList({ initialPokemonData }: PokemonListProps) {
   const observerRef = useObserver(onObserverIntersection);
 
   if (isPending) {
-    return <span className="text-xl">로딩중...</span>;
+    return <Loading />;
   }
 
   return (
@@ -56,7 +57,7 @@ export default function PokemonList({ initialPokemonData }: PokemonListProps) {
 
       {hasNextPage ? (
         isFetchingNextPage ? (
-          <span className="text-lg">로딩중...</span>
+          <Loading />
         ) : (
           <div ref={observerRef} />
         )
