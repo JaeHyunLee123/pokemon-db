@@ -34,7 +34,7 @@ export default function PokemonImageCard({
   return (
     <div
       className={cn(
-        "relative cursor-pointer flex p-1 items-center justify-center border-b-4 border-r-4 border-gray-800 rounded-xl bg-neutral-50",
+        "relative cursor-pointer flex items-center justify-center border-b-4 border-r-4 border-gray-800 rounded-xl bg-neutral-50",
         className
       )}
       style={{
