@@ -1,9 +1,5 @@
 import Link from "next/link";
 
-/**
- * /app/test/page.tsx
- * 하위 폴더를 자동으로 감지하여 Link로 렌더링하는 페이지
- */
 export default async function TestIndexPage() {
   const subfolders = ["pokemon-badge-test"];
 
