@@ -8,7 +8,7 @@ const POKEMON_DEFAULT_IMAGE_SIZE = 150;
 
 const CARD_PADDING_PIXEL = 10;
 
-interface PokemonImageProps {
+interface PokemonImageCardProps {
   frontImageUrl: string;
   backImageUrl: string;
   pokemonName: string;
@@ -16,13 +16,13 @@ interface PokemonImageProps {
   className?: string;
 }
 
-export default function PokemonImage({
+export default function PokemonImageCard({
   frontImageUrl,
   backImageUrl,
   pokemonName,
   imageSize = POKEMON_DEFAULT_IMAGE_SIZE,
   className = "",
-}: PokemonImageProps) {
+}: PokemonImageCardProps) {
   const [isFront, setIsFront] = useState(true);
 
   const handleImageClick: MouseEventHandler<HTMLDivElement> = (e) => {

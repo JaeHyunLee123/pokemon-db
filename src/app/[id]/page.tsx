@@ -1,4 +1,4 @@
-import PokemonImage from "@/components/PokemonImage";
+import PokemonImageCard from "@/components/PokemonImageCard";
 import { pokemonService } from "@/services/pokemon-services";
 
 export default async function Page({
@@ -17,7 +17,7 @@ export default async function Page({
 
   return (
     <div className="flex flex-col items-center p-10">
-      <PokemonImage
+      <PokemonImageCard
         frontImageUrl={frontImageUrl}
         backImageUrl={backImageUrl}
         pokemonName={name}
