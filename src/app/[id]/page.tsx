@@ -2,7 +2,7 @@ import PokemonImageCard from "@/components/PokemonImageCard";
 import TypeBadge from "@/components/TypeBadge";
 import { pokemonService } from "@/services/pokemon-services";
 
-export default async function Page({
+export default async function PokemonDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
