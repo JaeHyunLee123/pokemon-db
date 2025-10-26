@@ -1,4 +1,5 @@
 import PokemonImageCard from "@/components/PokemonImageCard";
+import TypeBadge from "@/components/TypeBadge";
 import { pokemonService } from "@/services/pokemon-services";
 
 export default async function Page({
@@ -29,7 +30,7 @@ export default async function Page({
 
       <div className="flex items-center justify-center gap-1">
         {types.map((type, i) => (
-          <span key={i}>{type}</span>
+          <TypeBadge key={i} type={type} />
         ))}
       </div>
     </div>
