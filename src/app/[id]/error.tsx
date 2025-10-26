@@ -1,5 +1,12 @@
 "use client";
 
+import { useParams } from "next/navigation";
+
 export default function PokemonDetailError() {
-  return <div>서버에 에러가 발생했습니다. 잠시 후 다시 시도해주세요.</div>;
+  const { id } = useParams();
+  return (
+    <div className="p-2">
+      {`아이디 ${id}에 해당하는 포켓몬은 존재하지 않습니다.`}
+    </div>
+  );
 }
