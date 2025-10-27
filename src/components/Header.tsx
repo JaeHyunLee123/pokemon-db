@@ -1,7 +1,6 @@
 "use client";
 
 import PokemonSearchInput from "@/components/PokemonSearchInput";
-import { cn } from "@/libs/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -17,9 +16,7 @@ export default function Header() {
         </Link>
       </div>
       <div className="bg-white h-14 flex justify-center items-center px-1">
-        <PokemonSearchInput
-          className={cn(pathname === "/" ? "visible" : "hidden")}
-        />
+        {pathname === "/" && <PokemonSearchInput />}
       </div>
     </header>
   );
