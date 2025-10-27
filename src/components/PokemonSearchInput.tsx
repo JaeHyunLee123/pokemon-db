@@ -19,7 +19,6 @@ export default function PokemonSearchInput({
       placeholder="포켓몬 이름으로 검색해보세요!"
       value={search}
       onChange={(e) => {
-        e.preventDefault();
         setSearch(e.currentTarget.value);
       }}
     />
