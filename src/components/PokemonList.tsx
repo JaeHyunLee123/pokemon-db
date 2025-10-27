@@ -3,6 +3,8 @@
 import Loading from "@/components/Loading";
 import PokemonCard from "@/components/PokemonCard";
 import useInfinitePokemon from "@/hooks/api/useInfinitePokemon";
+import useSearchStore from "@/hooks/stores/useSearchStore";
+import { useDebounce } from "@/hooks/useDebounce";
 import useObserver from "@/hooks/useObserver";
 import { PokemonList as PokemonListType } from "@/types/api-response-types/pokemon-api-response-type";
 import { InfiniteData } from "@tanstack/react-query";
@@ -13,6 +15,9 @@ interface PokemonListProps {
 }
 
 export default function PokemonList({ initialPokemonData }: PokemonListProps) {
+  const { search } = useSearchStore();
+  const debouncedSearchParam = useDebounce(search);
+
   const initialInfiniteData: InfiniteData<PokemonListType, number | undefined> =
     React.useMemo(
       () => ({
@@ -23,8 +28,8 @@ export default function PokemonList({ initialPokemonData }: PokemonListProps) {
     );
 
   const { data, isPending, hasNextPage, isFetchingNextPage, fetchNextPage } =
-    useInfinitePokemon("", {
-      initialData: initialInfiniteData,
+    useInfinitePokemon(debouncedSearchParam, {
+      initialData: debouncedSearchParam ? undefined : initialInfiniteData,
     });
 
   const onObserverIntersection = () => {
