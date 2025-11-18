@@ -24,9 +24,7 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
         height={90}
       />
 
-      <span className="text-lg font-medium hover:underline hover:font-semibold">
-        {pokemon.name}
-      </span>
+      <span className="text-lg font-medium">{pokemon.name}</span>
 
       <div className="w-full absolute bottom-0">
         <div className="h-2 bg-black" />
