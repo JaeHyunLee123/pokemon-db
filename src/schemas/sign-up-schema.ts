@@ -10,7 +10,7 @@ export const SignUpSchema = z
     passwordConfirm: z.string(),
   })
   .refine((data) => data.password === data.passwordConfirm, {
-    path: ["confirmPassword"],
+    path: ["passwordConfirm"],
     message: "비밀번호가 일치하지 않습니다",
   });
 
