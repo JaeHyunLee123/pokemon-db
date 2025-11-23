@@ -1,6 +1,6 @@
 "use client";
 
-import Loading from "@/components/Loading";
+import Loading from "@/components/common/Loading";
 import PokemonCard from "@/components/PokemonCard";
 import useInfinitePokemon from "@/hooks/api/useInfinitePokemon";
 import useSearchStore from "@/hooks/stores/useSearchStore";

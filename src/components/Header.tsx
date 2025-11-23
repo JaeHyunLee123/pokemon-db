@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/Button";
+import Button from "@/components/common/Button";
 import PokemonSearchInput from "@/components/PokemonSearchInput";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
