@@ -11,7 +11,7 @@ export default function Button({
   return (
     <button
       className={cn(
-        "bg-neutral-50 px-4 py-2 rounded-lg cursor-pointer border border-black disabled:bg-neutral-300 disabled:text-neutral-700",
+        "bg-neutral-50 px-4 py-2 cursor-pointer border-t border-l border-b-2 border-r-2 border-black disabled:bg-neutral-300 disabled:text-neutral-700",
         className
       )}
       {...props}
