@@ -1,0 +1,39 @@
+import { Toast } from "@/types/types";
+import { ReactNode, useCallback, useReducer } from "react";
+import ToastContext from "@/libs/contexts/ToastContext";
+
+//Reducer
+type Action =
+  | { type: "ADD_TOAST"; payload: Toast }
+  | { type: "REMOVE_TOAST"; payload: number };
+
+function toastReducer(state: Toast[], action: Action): Toast[] {
+  switch (action.type) {
+    case "ADD_TOAST":
+      return [...state, action.payload];
+    case "REMOVE_TOAST":
+      return state.filter((toast) => toast.id !== action.payload);
+    default:
+      return state;
+  }
+}
+
+//Provider
+export function ToastProvider({ children }: { children: ReactNode }) {
+  const [toasts, dispatch] = useReducer(toastReducer, []);
+
+  const addToast = useCallback((newToast: Toast) => {
+    dispatch({ type: "ADD_TOAST", payload: newToast });
+  }, []);
+
+  const removeToast = useCallback((id: number) => {
+    dispatch({ type: "REMOVE_TOAST", payload: id });
+  }, []);
+
+  return (
+    <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
+      {children}
+      {/* TODO: ToastContainer 추가  */}
+    </ToastContext.Provider>
+  );
+}
