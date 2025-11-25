@@ -13,7 +13,7 @@ function useToast() {
     content: Toast["content"]
   ) {
     const newToast: Toast = {
-      id: Date.now(),
+      id: Date.now() + Math.random(),
       type,
       title,
       content,
