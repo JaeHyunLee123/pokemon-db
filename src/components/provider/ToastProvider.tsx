@@ -1,6 +1,7 @@
 import { Toast } from "@/types/types";
 import { ReactNode, useCallback, useReducer } from "react";
 import ToastContext from "@/libs/contexts/ToastContext";
+import ToastContainer from "@/components/common/toast/ToastContainer";
 
 //Reducer
 type Action =
@@ -33,7 +34,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
       {children}
-      {/* TODO: ToastContainer 추가  */}
+      <ToastContainer />
     </ToastContext.Provider>
   );
 }
