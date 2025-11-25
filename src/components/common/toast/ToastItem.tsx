@@ -49,7 +49,9 @@ export default function ToastItem({ id, type, title, content }: Toast) {
         <h4 className={styles.title}>{title}</h4>
         <p className={styles.content}>{content}</p>
       </div>
-      <XIcon className={styles.icon} onClick={handleClickDelete} />
+      <button onClick={handleClickDelete}>
+        <XIcon className={styles.icon} />
+      </button>
     </div>
   );
 }
