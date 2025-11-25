@@ -18,7 +18,7 @@ const TOAST_COLORS = {
     bg: "bg-red-50",
     icon: "text-red-500",
     title: "text-neutral-900 font-medium text-lg",
-    content: "text-nuetral-500",
+    content: "text-neutral-500",
   },
 };
 
