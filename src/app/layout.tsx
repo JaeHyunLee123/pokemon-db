@@ -4,7 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Providers from "@/components/Providers";
+import Providers from "@/components/provider/Providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
