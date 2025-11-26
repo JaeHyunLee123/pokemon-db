@@ -1,7 +1,7 @@
 import { UsedEmailError } from "@/errors/auth-error";
 import { UnknownError } from "@/errors/common-error";
 import { authRepository } from "@/repositories/auth-repository";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { Prisma } from "@/generated/prisma";
 import bcrypt from "bcrypt";
 
 const SALT_ROUND = 10;
@@ -13,7 +13,7 @@ export const authService = {
     try {
       await authRepository.signUp(email, hashedPassword);
     } catch (e) {
-      if (e instanceof PrismaClientKnownRequestError) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === "P2002") {
           throw new UsedEmailError();
         } else {
