@@ -1,6 +1,6 @@
-export class UnknownSignUpError extends Error {
+export class UnknownError extends Error {
   constructor(cause?: unknown) {
-    super("Unknown sign up error", { cause });
-    this.name = "UnknownSignUpError";
+    super("Unknown error", { cause });
+    this.name = "UnknownError";
   }
 }
