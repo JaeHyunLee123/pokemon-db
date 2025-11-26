@@ -2,6 +2,7 @@
 
 import Button from "@/components/common/Button";
 import Input from "@/components/common/Input";
+import useSignUp from "@/hooks/api/useSignUp";
 import { cn } from "@/libs/utils";
 import { SignUpSchema, type SignUp } from "@/schemas/sign-up-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,9 +21,10 @@ export default function SignUpForm({
     resolver: zodResolver(SignUpSchema),
   });
 
-  const onSubmit = (form: SignUp) => {
-    //TODO: api 연결
-    console.log(form);
+  const { mutate, isPending } = useSignUp();
+
+  const onSubmit = ({ email, password }: SignUp) => {
+    mutate({ email, password });
   };
 
   return (
@@ -53,8 +55,8 @@ export default function SignUpForm({
         errorMessage={errors.passwordConfirm?.message}
         {...register("passwordConfirm")}
       />
-      <Button type="submit" aria-label="sign-up-button">
-        회원가입
+      <Button type="submit" aria-label="sign-up-button" disabled={isPending}>
+        {isPending ? "로딩중" : "회원가입"}
       </Button>
     </form>
   );
