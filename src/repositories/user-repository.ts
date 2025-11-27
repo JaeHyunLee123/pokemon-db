@@ -2,18 +2,22 @@ import prisma from "@/libs/prisma";
 
 export const userRepository = {
   async findUserById(id: number) {
-    await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id,
       },
     });
+
+    return user;
   },
 
   async findUserByEmail(email: string) {
-    await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         email,
       },
     });
+
+    return user;
   },
 };
