@@ -23,4 +23,7 @@ DATABASE_URL=
 
 # Direct connection to the database. Used for migrations
 DIRECT_URL=
+
+# Secret key to generate JWT
+SESSION_SECRET =
 ```
