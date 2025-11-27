@@ -11,3 +11,17 @@ export class VerifyFailError extends Error {
     this.name = "VerifyFailError";
   }
 }
+
+export class NoUserError extends Error {
+  constructor() {
+    super("No user");
+    this.name = "NoUserError";
+  }
+}
+
+export class IncorrectPasswordError extends Error {
+  constructor() {
+    super("Incorrect password");
+    this.name = "IncorrectPasswordError";
+  }
+}
