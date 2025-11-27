@@ -20,9 +20,13 @@ export async function encrypt(userId: number) {
 
 export async function decrypt(session: string | undefined = "") {
   try {
-    const { payload } = await jwtVerify(session, encodedKey, {
-      algorithms: [ENCODE_ALGORITHM],
-    });
+    const { payload } = await jwtVerify<{ userId: string }>(
+      session,
+      encodedKey,
+      {
+        algorithms: [ENCODE_ALGORITHM],
+      }
+    );
     return payload;
   } catch (error) {
     console.error(error);
@@ -38,6 +42,26 @@ export async function createSession(userId: number) {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     expires: new Date(Date.now() + EXPIRE_DURATION),
+    sameSite: "lax",
+    path: "/",
+  });
+}
+
+export async function updateSession() {
+  const session = (await cookies()).get(SESSION_TOKEN_NAME)?.value;
+  const payload = await decrypt(session);
+
+  if (!session || !payload) {
+    return null;
+  }
+
+  const expires = new Date(Date.now() + EXPIRE_DURATION);
+
+  const cookieStore = await cookies();
+  cookieStore.set(SESSION_TOKEN_NAME, session, {
+    httpOnly: true,
+    secure: true,
+    expires: expires,
     sameSite: "lax",
     path: "/",
   });
