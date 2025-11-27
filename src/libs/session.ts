@@ -47,6 +47,17 @@ export async function createSession(userId: number) {
   });
 }
 
+export async function getSession() {
+  const session = (await cookies()).get(SESSION_TOKEN_NAME)?.value;
+  const payload = await decrypt(session);
+
+  if (!session || !payload) {
+    return null;
+  }
+
+  return payload;
+}
+
 export async function updateSession() {
   const session = (await cookies()).get(SESSION_TOKEN_NAME)?.value;
   const payload = await decrypt(session);
