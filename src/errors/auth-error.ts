@@ -25,3 +25,10 @@ export class IncorrectPasswordError extends Error {
     this.name = "IncorrectPasswordError";
   }
 }
+
+export class NoSessionError extends Error {
+  constructor() {
+    super("No session");
+    this.name = "NoSessionError";
+  }
+}
