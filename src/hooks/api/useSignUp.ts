@@ -1,6 +1,7 @@
 import useToast from "@/hooks/useToast";
+import { api } from "@/libs/axios";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 
 type useSignUpOptions = Omit<
@@ -14,7 +15,7 @@ export default function useSignUp(options?: useSignUpOptions) {
 
   return useMutation({
     mutationFn: async ({ email, password }) => {
-      await axios.post("/api/auth/sign-up", { email, password });
+      await api.post("/api/auth/sign-up", { email, password });
     },
     onSuccess: () => {
       triggerToast("success", "회원가입 성공", "회원가입에 성공했습니다.");
