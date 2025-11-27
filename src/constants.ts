@@ -44,4 +44,4 @@ export const TYPE_COLORS: Record<string, string> = {
   unknown: "bg-gray-200 text-black",
 } as const;
 
-const SECRET_KEY = process.env.SESSION_SECRET;
+export const SESSION_SECRET_KEY = process.env.SESSION_SECRET_KEY;

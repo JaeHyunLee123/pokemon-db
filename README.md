@@ -25,5 +25,5 @@ DATABASE_URL=
 DIRECT_URL=
 
 # Secret key to generate JWT
-SESSION_SECRET =
+SESSION_SECRET_KEY =
 ```
