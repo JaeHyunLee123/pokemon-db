@@ -20,7 +20,7 @@ export async function encrypt(userId: number) {
 
 export async function decrypt(session: string | undefined = "") {
   try {
-    const { payload } = await jwtVerify<{ userId: string }>(
+    const { payload } = await jwtVerify<{ userId: number }>(
       session,
       encodedKey,
       {
