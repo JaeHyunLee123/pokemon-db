@@ -4,3 +4,10 @@ export class UsedEmailError extends Error {
     this.name = "UsedEmailError";
   }
 }
+
+export class VerifyFailError extends Error {
+  constructor() {
+    super("Verify fail");
+    this.name = "VerifyFailError";
+  }
+}
