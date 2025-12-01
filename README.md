@@ -109,7 +109,7 @@ Retrieves a paginated list of Pokémon. Can be filtered by name.
 | `200 OK`                    | Returns a list of Pokémon.    |
 | `500 Internal Server Error` | Failed to fetch Pokémon list. |
 
-### GET /api/pokemon/{id}
+### GET /api/pokemon/:id
 
 Retrieves a single Pokémon by its ID.
 
