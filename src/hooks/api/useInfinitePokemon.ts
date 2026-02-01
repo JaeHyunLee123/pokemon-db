@@ -1,10 +1,10 @@
+import { api } from "@/libs/axios";
 import { PokemonList } from "@/types/api-response-types/pokemon-api-response-type";
 import {
   InfiniteData,
   useInfiniteQuery,
   UseInfiniteQueryOptions,
 } from "@tanstack/react-query";
-import axios from "axios";
 
 // ✅ 외부에서 넘길 수 없는 옵션 제거 (내부에서 고정할 값들)
 type UseInfinitePokemonOptions = Omit<
@@ -25,7 +25,7 @@ export default function useInfinitePokemon(
   return useInfiniteQuery({
     queryKey: ["pokemon", searchParam ?? ""], // 외부에서 못 바꾸도록 내부 고정
     queryFn: async ({ pageParam = 1 }) => {
-      const res = await axios.get("/api/pokemon", {
+      const res = await api.get("/api/pokemon", {
         params: {
           cursor: pageParam,
           name: searchParam && searchParam.length > 0 ? searchParam : undefined,

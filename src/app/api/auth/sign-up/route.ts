@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     if (e instanceof UsedEmailError) {
       return NextResponse.json(
         { message: "Email already used" },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     if (e instanceof z.ZodError) {
       return NextResponse.json(
         { message: "Invalid request body" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 

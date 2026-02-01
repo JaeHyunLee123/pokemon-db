@@ -43,3 +43,5 @@ export const TYPE_COLORS: Record<string, string> = {
   // fallback key
   unknown: "bg-gray-200 text-black",
 } as const;
+
+export const SESSION_SECRET_KEY = process.env.SESSION_SECRET_KEY;
