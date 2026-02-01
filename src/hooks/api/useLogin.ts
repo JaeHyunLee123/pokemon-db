@@ -2,7 +2,7 @@ import useToast from "@/hooks/useToast";
 import { api } from "@/libs/axios";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 type UseLoginOptions = Omit<
   UseMutationOptions<unknown, AxiosError, { email: string; password: string }>,
