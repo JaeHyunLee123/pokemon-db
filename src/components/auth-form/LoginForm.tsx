@@ -2,6 +2,7 @@
 
 import Button from "@/components/common/Button";
 import Input from "@/components/common/Input";
+import useLogin from "@/hooks/api/useLogin";
 import { cn } from "@/libs/utils";
 import { LoginFormSchema, LoginFormType } from "@/schemas/login-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,9 +21,10 @@ export default function LoginForm({
     resolver: zodResolver(LoginFormSchema),
   });
 
+  const { mutate, isPending } = useLogin();
+
   const onSubmit = (form: LoginFormType) => {
-    //TODO: api 연결
-    console.log(form);
+    mutate(form);
   };
 
   return (
@@ -47,8 +49,8 @@ export default function LoginForm({
         errorMessage={errors.password?.message}
       />
 
-      <Button type="submit" aria-label="login-button">
-        {"로그인"}
+      <Button type="submit" aria-label="login-button" disabled={isPending}>
+        {isPending ? "로딩중" : "로그인"}
       </Button>
     </form>
   );
