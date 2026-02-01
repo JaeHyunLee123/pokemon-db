@@ -11,7 +11,7 @@ NextJS와 Prisma를 사용한 포켓몬 정보 조회 웹사이트
   - [ ] Virtual List
 - [x] 포켓몬 상세 정보 조회
 - [x] 포켓몬 검색
-- [ ] 로그인 / 회원가입
+- [x] 로그인 / 회원가입
 - [ ] 소셜 로그인
 - [ ] 북마크
 
@@ -53,16 +53,18 @@ Creates a new user account.
 | `409 Conflict` | Email already in use. |
 | `500 Internal Server Error` | Server error. |
 
-### GET /api/auth/login
+### POST /api/auth/login
 
 Logs in a user and sets a session cookie.
 
-**Query Parameters:**
+**Request Body:**
 
-| Name       | Type     | Description          |
-| :--------- | :------- | :------------------- |
-| `email`    | `string` | The user's email.    |
-| `password` | `string` | The user's password. |
+```
+{
+"email": "user@example.com",
+"password": "yourpassword"
+}
+```
 
 **Responses:**
 
