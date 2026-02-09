@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export default async function TestIndexPage() {
-  const subfolders = ["pokemon-badge-test"];
+  const subfolders = ["pokemon-badge-test", "virtual-list-test"];
 
   return (
     <main className="gap-2 flex flex-col items-center py-10">
