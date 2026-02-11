@@ -6,24 +6,41 @@ import { PokemonList } from "@/types/api-response-types/pokemon-api-response-typ
 import { Pokemon } from "@/types/pokemon";
 import { UIEventHandler, useEffect, useMemo, useRef, useState } from "react";
 
-const POKEMON_CARD_HEIGHT_PX = 206 + 10; //card heght + margin
+const ROW_HEIGHT_PX = 210 + 10; //card heght + margin
 const POKEMON_COUNT = 1000;
-const INNER_CONTAINER_HEIGHT = POKEMON_CARD_HEIGHT_PX * POKEMON_COUNT;
 const BUFFER = 5;
+
+const getItemsPerRow = (width: number) => {
+  if (width > 900) {
+    return 5;
+  } else if (width > 740) {
+    return 4;
+  } else if (width > 570) {
+    return 3;
+  } else if (width > 405) {
+    return 2;
+  } else {
+    return 1;
+  }
+};
 
 export default function VirtualListTestPage() {
   const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
 
   useEffect(() => {
     api.get<PokemonList>("/api/pokemon").then((res) => {
-      setAllPokemons(Array(POKEMON_COUNT).fill(res.data.pokemons[0]));
+      const uniquePokemons = Array.from({ length: POKEMON_COUNT }, (_, i) => ({
+        ...res.data.pokemons[0],
+        id: res.data.pokemons[0].id + i,
+        name: `${res.data.pokemons[0].name}-${i}`,
+      }));
+      setAllPokemons(uniquePokemons);
     });
   }, []);
 
-  //1. 전체화면 버추얼 리스트
-
   const [scrollTop, setScrollTop] = useState(0);
   const [containerHeight, setContainerHeight] = useState(0);
+  const [containerWidth, setContainerWidth] = useState(0);
 
   //The view port (outer container)
   const containerRef = useRef<HTMLDivElement>(null);
@@ -33,35 +50,50 @@ export default function VirtualListTestPage() {
     setScrollTop(e.currentTarget.scrollTop);
   };
 
-  const { visiblePokemons, startIndex } = useMemo(() => {
-    if (!containerHeight || allPokemons.length === 0) {
-      return { visiblePokemons: [], startIndex: 0 };
-    }
-
-    const newStartIndex = Math.floor(scrollTop / POKEMON_CARD_HEIGHT_PX);
-    const visibleCount = Math.ceil(containerHeight / POKEMON_CARD_HEIGHT_PX);
-
-    const start = Math.max(0, newStartIndex - BUFFER);
-    const end = Math.min(
-      allPokemons.length,
-      newStartIndex + visibleCount + BUFFER,
-    );
-
-    return {
-      visiblePokemons: allPokemons.slice(start, end),
-      startIndex: start,
-    };
-  }, [allPokemons, containerHeight, scrollTop]);
-
   useEffect(() => {
     if (!containerRef.current) return;
-    setContainerHeight(containerRef.current?.clientHeight);
 
-    // console.log("height:" + containerRef.current?.clientHeight);
-    // console.log("count:" + visiblePokemons.length);
-  }, [containerRef.current?.clientHeight]);
+    setContainerHeight(containerRef.current.clientHeight);
+    setContainerWidth(containerRef.current.clientWidth);
+  }, [containerRef.current?.clientHeight, containerRef.current?.clientWidth]);
 
-  //2. 반응형 버추얼 리스트
+  const { visibleRows, startRowIndex, innerContainerHeight } = useMemo(() => {
+    if (!containerHeight || allPokemons.length === 0) {
+      return {
+        visibleRows: [],
+        startRowIndex: 0,
+        innerContainerHeight: 0,
+      };
+    }
+
+    const itemsPerRow = getItemsPerRow(containerWidth);
+    const totalRows = Math.ceil(allPokemons.length / itemsPerRow);
+    const innerContainerHeight = totalRows * ROW_HEIGHT_PX;
+
+    const newStartIndex = Math.floor(scrollTop / ROW_HEIGHT_PX);
+    const visibleRowCount = Math.ceil(containerHeight / ROW_HEIGHT_PX);
+
+    const startRowIndex = Math.max(0, newStartIndex - BUFFER);
+    const endRowIndex = Math.min(
+      totalRows,
+      newStartIndex + visibleRowCount + BUFFER,
+    );
+
+    const startItemIndex = startRowIndex * itemsPerRow;
+    const endItemIndex = endRowIndex * itemsPerRow;
+
+    const slicedItems = allPokemons.slice(startItemIndex, endItemIndex);
+
+    const groupedRows: Pokemon[][] = [];
+    for (let i = 0; i < slicedItems.length; i += itemsPerRow) {
+      groupedRows.push(slicedItems.slice(i, i + itemsPerRow));
+    }
+    return {
+      visibleRows: groupedRows,
+      startRowIndex: newStartIndex,
+      innerContainerHeight,
+    };
+  }, [allPokemons, containerHeight, scrollTop, containerWidth]);
 
   return (
     // Outer
@@ -73,22 +105,25 @@ export default function VirtualListTestPage() {
       {/* Inner */}
       <div
         className="relative w-full"
-        style={{ height: `${INNER_CONTAINER_HEIGHT}px` }}
+        style={{ height: `${innerContainerHeight}px` }}
       >
         {/* Sliding window */}
         <div
-          className="absolute w-full top-0 left-0"
+          className="absolute w-full top-0 left-0 flex flex-col items-center gap-2.5 "
           style={{
-            transform: `translateY(${startIndex * POKEMON_CARD_HEIGHT_PX}px)`,
+            transform: `translateY(${startRowIndex * ROW_HEIGHT_PX}px)`,
           }}
         >
-          {visiblePokemons ? (
-            visiblePokemons.map((pokemon, i) => (
-              <PokemonCard
-                key={startIndex + i}
-                pokemon={{ ...pokemon, name: pokemon.name + (startIndex + i) }}
-                className="mb-2.5"
-              />
+          {visibleRows ? (
+            visibleRows.map((row, rowIndex) => (
+              <div
+                key={`row-${startRowIndex + rowIndex}`}
+                className="flex flex-wrap justify-start gap-2.5 mb-2.5"
+              >
+                {row.map((pokemon) => (
+                  <PokemonCard pokemon={pokemon} key={pokemon.id} />
+                ))}
+              </div>
             ))
           ) : (
             <span>포켓몬 정보를 불러오지 못했습니다.</span>
