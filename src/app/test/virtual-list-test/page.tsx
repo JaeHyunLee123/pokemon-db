@@ -33,11 +33,6 @@ export default function VirtualListTestPage() {
     setScrollTop(e.currentTarget.scrollTop);
   };
 
-  useEffect(() => {
-    if (!containerRef.current) return;
-    setContainerHeight(containerRef.current?.clientHeight);
-  }, []);
-
   const { visiblePokemons, startIndex } = useMemo(() => {
     if (!containerHeight || allPokemons.length === 0) {
       return { visiblePokemons: [], startIndex: 0 };
@@ -57,6 +52,15 @@ export default function VirtualListTestPage() {
       startIndex: start,
     };
   }, [allPokemons, containerHeight, scrollTop]);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    setContainerHeight(containerRef.current?.clientHeight);
+
+    // console.log("height:" + containerRef.current?.clientHeight);
+    // console.log("count:" + visiblePokemons.length);
+  }, [containerRef.current?.clientHeight]);
+
   //2. 반응형 버추얼 리스트
 
   return (
