@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef } from "react";
 
 export default function useObserver(
   onIntersection: () => void,
-  observerOptions?: IntersectionObserverInit
+  observerOptions?: IntersectionObserverInit,
 ) {
   const observerRef = useRef<HTMLDivElement | null>(null);
 
@@ -12,13 +12,13 @@ export default function useObserver(
         onIntersection();
       }
     },
-    [onIntersection]
+    [onIntersection],
   );
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       handleIntersection,
-      observerOptions
+      observerOptions,
     );
 
     if (observerRef.current) {
