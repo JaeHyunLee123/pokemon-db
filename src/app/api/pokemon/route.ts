@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     console.error(error);
     return NextResponse.json(
       { error: "Failed to fetch Pokemon list" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

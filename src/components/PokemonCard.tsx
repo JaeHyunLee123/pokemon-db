@@ -1,16 +1,26 @@
+import { cn } from "@/libs/utils";
 import { Pokemon } from "@/types/pokemon";
 import Image from "next/image";
 import Link from "next/link";
+import { ComponentProps } from "react";
 
-interface PokemonCardProps {
+interface PokemonCardProps extends Omit<ComponentProps<typeof Link>, "href"> {
   pokemon: Pokemon;
 }
 
-export default function PokemonCard({ pokemon }: PokemonCardProps) {
+export default function PokemonCard({
+  pokemon,
+  className,
+  ...props
+}: PokemonCardProps) {
   return (
     <Link
+      {...props}
       href={`/${pokemon.id}`}
-      className="flex flex-col relative gap-1 overflow-hidden justify-center items-center px-8 py-10 border-b-4 border-r-4 border-gray-800 rounded-xl bg-neutral-50 cursor-pointer hover:scale-105 transition-transform"
+      className={cn(
+        "flex flex-col relative gap-1 overflow-hidden justify-center items-center px-8 py-10 border-b-4 border-r-4 border-gray-800 rounded-xl bg-neutral-50 cursor-pointer hover:scale-105 transition-transform",
+        className,
+      )}
     >
       <div className="w-full absolute top-0">
         <div className="h-2 bg-red-500" />

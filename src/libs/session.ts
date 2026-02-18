@@ -25,7 +25,7 @@ export async function decrypt(session: string | undefined = "") {
       encodedKey,
       {
         algorithms: [ENCODE_ALGORITHM],
-      }
+      },
     );
     return payload;
   } catch (error) {
