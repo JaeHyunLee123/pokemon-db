@@ -2,13 +2,12 @@
 
 import Button from "@/components/common/Button";
 import PokemonSearchInput from "@/components/PokemonSearchInput";
+import useUser from "@/hooks/api/useUser";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
 
 export default function Header() {
-  //TODO: 실제 로그인 상태에 연결
-  const [isLoggedIn] = useState(false);
+  const { data: userData } = useUser();
 
   const pathname = usePathname();
 
@@ -22,8 +21,11 @@ export default function Header() {
           <h1 className="text-white font-semibold text-2xl">포켓몬 DB</h1>
         </Link>
 
-        {isLoggedIn ? (
+        {userData ? (
           <div className="w-[33%] flex items-center justify-end gap-2 pr-2">
+            <span className="text-white text-right">
+              logged in with {userData.email}
+            </span>
             <Button>로그아웃</Button>
           </div>
         ) : (
