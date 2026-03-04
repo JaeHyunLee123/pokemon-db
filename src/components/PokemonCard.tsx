@@ -21,6 +21,7 @@ export default function PokemonCard({
         "flex flex-col relative gap-1 overflow-hidden justify-center items-center px-8 py-10 border-b-4 border-r-4 border-gray-800 rounded-xl bg-neutral-50 cursor-pointer hover:scale-105 transition-transform",
         className,
       )}
+      prefetch={false}
     >
       <div className="w-full absolute top-0">
         <div className="h-2 bg-red-500" />
