@@ -2,7 +2,6 @@ import useToast from "@/hooks/useToast";
 import { api } from "@/libs/axios";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
 
 type UseLogoutOptions = Omit<
   UseMutationOptions<unknown, AxiosError>,
