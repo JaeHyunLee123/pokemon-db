@@ -89,7 +89,7 @@ export default function PokemonList({ initialPokemonData }: PokemonListProps) {
 
   return (
     <div
-      className="flex flex-col gap-2 h-[100vh] overflow-y-scroll w-full p-10"
+      className="flex flex-col gap-2 h-[calc(100vh-300px)] overflow-y-scroll w-full p-10"
       ref={outerContainerRef}
       onScroll={handleOuterContainerScroll}
     >
