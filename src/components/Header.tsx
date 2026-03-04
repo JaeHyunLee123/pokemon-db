@@ -2,12 +2,15 @@
 
 import Button from "@/components/common/Button";
 import PokemonSearchInput from "@/components/PokemonSearchInput";
+import useLogout from "@/hooks/api/useLogout";
 import useUser from "@/hooks/api/useUser";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function Header() {
   const { data: userData } = useUser();
+
+  const { mutate: logout, isPending: isLogoutPending } = useLogout();
 
   const pathname = usePathname();
 
@@ -29,7 +32,14 @@ export default function Header() {
             <span className="text-white text-right">
               logged in with {userData.email}
             </span>
-            <Button>로그아웃</Button>
+            <Button
+              disabled={isLogoutPending}
+              onClick={() => {
+                logout();
+              }}
+            >
+              로그아웃
+            </Button>
           </div>
         ) : (
           <div className="sm:w-[33%] flex items-center justify-end gap-2 pr-2">
