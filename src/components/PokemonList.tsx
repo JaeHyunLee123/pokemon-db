@@ -44,9 +44,14 @@ export default function PokemonList({ initialPokemonData }: PokemonListProps) {
       [initialPokemonData],
     );
 
+  const emptyData = {
+    pageParams: [0],
+    pages: [{ nextCursor: 1, pokemons: [] }],
+  };
+
   const { data, isPending, hasNextPage, isFetchingNextPage, fetchNextPage } =
     useInfinitePokemon(debouncedSearchParam, {
-      initialData: debouncedSearchParam ? undefined : initialInfiniteData,
+      initialData: debouncedSearchParam ? emptyData : initialInfiniteData,
     });
 
   const allItems = useMemo(() => {
@@ -76,7 +81,7 @@ export default function PokemonList({ initialPokemonData }: PokemonListProps) {
   });
 
   const onObserverIntersection = () => {
-    if (hasNextPage) {
+    if (hasNextPage && !isPending && !isFetchingNextPage) {
       fetchNextPage();
     }
   };
