@@ -1,12 +1,33 @@
 import PokemonImageCard from "@/components/PokemonImageCard";
 import TypeBadge from "@/components/TypeBadge";
 import { pokemonService } from "@/services/pokemon-services";
+import { Metadata } from "next";
+
+type PokemonDetailPageProps = {
+  params: Promise<{ id: string }>;
+};
+
+export async function generateMetadata({
+  params,
+}: PokemonDetailPageProps): Promise<Metadata> {
+  const { id } = await params;
+  const pokemonDetail = await pokemonService.getById(Number(id));
+
+  if (!pokemonDetail) {
+    return {
+      title: "Pokemon DB",
+    };
+  }
+
+  return {
+    title: `Pokemon DB - ${pokemonDetail.name}`,
+    description: pokemonDetail.description,
+  };
+}
 
 export default async function PokemonDetailPage({
   params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+}: PokemonDetailPageProps) {
   const { id } = await params;
   const pokemonDetail = await pokemonService.getById(Number(id));
 
