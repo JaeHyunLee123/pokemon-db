@@ -3,6 +3,7 @@ import { pokemonRepository } from "@/repositories/pokemon-repository";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { PokemonList } from "@/types/api-response-types/pokemon-api-response-type";
 import { PokemonDetail, Pokemon } from "@/types/pokemon";
+import pokemonNames from "@/constants/pokemonNames.json";
 
 export const pokemonService = {
   /**
@@ -43,27 +44,13 @@ export const pokemonService = {
    * AI를 활용한 포켓몬 검색
    */
   async searchByAI(query: string): Promise<Pokemon[]> {
-    const fs = await import("fs");
-    const path = await import("path");
-
     if (!process.env.GEMINI_API_KEY) {
       throw new Error("GEMINI_API_KEY is not configured");
     }
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-    // 1. Load the 1000 pokemon names from static file
-    const namesPath = path.join(
-      process.cwd(),
-      "src",
-      "constants",
-      "pokemonNames.json"
-    );
-    if (!fs.existsSync(namesPath)) {
-      throw new Error("pokemon names static file missing");
-    }
-    const namesData = fs.readFileSync(namesPath, "utf8");
-    const pokemonNames = JSON.parse(namesData);
+    // 1. Load the 1000 pokemon names from static file (Now statically imported at the top)
 
     // 2. Prepare Gemini Prompt with Context Injection
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
