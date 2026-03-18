@@ -1,5 +1,6 @@
 import { pokemonPageSize } from "@/constants";
 import { pokemonRepository } from "@/repositories/pokemon-repository";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { PokemonList } from "@/types/api-response-types/pokemon-api-response-type";
 import { PokemonDetail, Pokemon } from "@/types/pokemon";
 
@@ -42,7 +43,6 @@ export const pokemonService = {
    * AI를 활용한 포켓몬 검색
    */
   async searchByAI(query: string): Promise<Pokemon[]> {
-    const { GoogleGenerativeAI } = await import("@google/generative-ai");
     const fs = await import("fs");
     const path = await import("path");
 
@@ -66,7 +66,7 @@ export const pokemonService = {
     const pokemonNames = JSON.parse(namesData);
 
     // 2. Prepare Gemini Prompt with Context Injection
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const prompt = `
 당신은 포켓몬 전문가입니다. 
