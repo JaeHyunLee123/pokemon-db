@@ -16,10 +16,10 @@ export async function POST(req: NextRequest) {
     const pokemons = await pokemonService.searchByAI(query);
 
     return NextResponse.json({ pokemons });
-  } catch (error: any) {
+  } catch (error) {
     console.error("AI Search Error:", error);
 
-    if (error.message === "GEMINI_API_KEY is not configured") {
+    if (error instanceof Error && error.message === "GEMINI_API_KEY is not configured") {
       return NextResponse.json(
         { error: "GEMINI_API_KEY is not configured" },
         { status: 500 }

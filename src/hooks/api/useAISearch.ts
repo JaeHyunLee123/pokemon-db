@@ -23,7 +23,7 @@ export default function useAISearch(options?: useAISearchOptions) {
       
       return res.data.pokemons;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       triggerToast("success", "검색 완료", "요청하신 조건에 부합하는 포켓몬 목록을 가져왔습니다.");
     },
     onError: (e) => {

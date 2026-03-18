@@ -95,7 +95,7 @@ ${pokemonNames.join(", ")}
 
     try {
       aiNames = JSON.parse(textResult);
-    } catch (e) {
+    } catch {
       console.error("Failed to parse Gemini JSON:", textResult);
       throw new Error("Failed to process AI response");
     }
