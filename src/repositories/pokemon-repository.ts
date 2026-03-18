@@ -48,4 +48,21 @@ export const pokemonRepository = {
 
     return pokemon;
   },
+
+  async findManyByName(names: string[]): Promise<Pokemon[]> {
+    const pokemons = await prisma.pokemon.findMany({
+      where: {
+        name: {
+          in: names,
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        frontImageUrl: true,
+      },
+    });
+
+    return pokemons;
+  },
 };

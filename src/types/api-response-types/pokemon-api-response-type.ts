@@ -4,3 +4,8 @@ export interface PokemonList {
   nextCursor: number | undefined;
   pokemons: Pokemon[];
 }
+
+export interface AISearchResponse {
+  pokemons: Pokemon[];
+  error?: string;
+}
