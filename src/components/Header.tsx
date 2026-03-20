@@ -32,6 +32,9 @@ export default function Header() {
             <span className="text-white text-right">
               logged in with {userData.email}
             </span>
+            <Link href="/mypage">
+              <Button>마이페이지</Button>
+            </Link>
             <Button
               disabled={isLogoutPending}
               onClick={() => {
@@ -42,6 +45,7 @@ export default function Header() {
             </Button>
           </div>
         ) : (
+
           <div className="sm:w-[33%] flex items-center justify-end gap-2 pr-2">
             <Link href={"/login"} aria-label="login-page">
               <Button>로그인</Button>
