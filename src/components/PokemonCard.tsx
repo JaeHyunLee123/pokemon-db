@@ -2,17 +2,28 @@ import { cn } from "@/libs/utils";
 import { Pokemon } from "@/types/pokemon";
 import Image from "next/image";
 import Link from "next/link";
-import { ComponentProps } from "react";
+import { ComponentProps, MouseEvent } from "react";
+import HeartIcon from "./icons/HeartIcon";
 
 interface PokemonCardProps extends Omit<ComponentProps<typeof Link>, "href"> {
   pokemon: Pokemon;
+  isBookmarked?: boolean;
+  onBookmarkToggle?: (pokemonId: number) => void;
 }
 
 export default function PokemonCard({
   pokemon,
+  isBookmarked = false,
+  onBookmarkToggle,
   className,
   ...props
 }: PokemonCardProps) {
+  const handleBookmarkClick = (e: MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onBookmarkToggle?.(pokemon.id);
+  };
+
   return (
     <Link
       {...props}
@@ -27,6 +38,20 @@ export default function PokemonCard({
         <div className="h-2 bg-red-500" />
         <div className="h-2 bg-black" />
       </div>
+
+      <button
+        onClick={handleBookmarkClick}
+        className="absolute top-4 right-4 z-10 p-1 hover:scale-110 transition-transform cursor-pointer"
+        type="button"
+      >
+        <HeartIcon
+          isFilled={isBookmarked}
+          className={cn(
+            "size-7",
+            isBookmarked ? "text-red-500" : "text-gray-400 hover:text-red-500",
+          )}
+        />
+      </button>
 
       <Image
         src={pokemon.frontImageUrl}
@@ -44,3 +69,4 @@ export default function PokemonCard({
     </Link>
   );
 }
+

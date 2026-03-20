@@ -80,10 +80,10 @@
 
 ### 진행해야 할 일 (To-Do List)
 
-- [ ] **1. 프론트엔드 컴포넌트 업데이트**
-  - [ ] `src/components/icons/HeartIcon.tsx` 수정
+- [x] **1. 프론트엔드 컴포넌트 업데이트**
+  - [x] `src/components/icons/HeartIcon.tsx` 수정
     - props에 `isFilled` 혹은 `filled` 상태를 추가하여, SVG 패스를 빈 하트와 꽉 찬 하트로 분기하여 렌더링
-  - [ ] `src/components/PokemonCard.tsx` 구조 변경
+  - [x] `src/components/PokemonCard.tsx` 구조 변경
     - 카드 내부 우측 상단(또는 하단)에 북마크 전용 버튼(또는 아이콘) 배치
     - 클릭 시의 페이지(`/pokemon/[id]`) 라우팅을 방지하기 위해 `e.preventDefault()`, `e.stopPropagation()` 처리
 
