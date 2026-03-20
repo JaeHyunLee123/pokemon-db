@@ -2,6 +2,7 @@
 
 import Loading from "@/components/common/Loading";
 import PokemonCard from "@/components/PokemonCard";
+import useBookmarks from "@/hooks/api/useBookmarks";
 import useInfinitePokemon from "@/hooks/api/useInfinitePokemon";
 import useSearchStore from "@/hooks/stores/useSearchStore";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -35,14 +36,20 @@ export default function PokemonList({ initialPokemonData }: PokemonListProps) {
   const { search } = useSearchStore();
   const debouncedSearchParam = useDebounce(search);
 
-  const initialInfiniteData: InfiniteData<PokemonListType, number | undefined> =
-    React.useMemo(
-      () => ({
-        pageParams: [1],
-        pages: [initialPokemonData],
-      }),
-      [initialPokemonData],
-    );
+  const initialInfiniteData = React.useMemo<
+    InfiniteData<PokemonListType, number | undefined>
+  >(
+    () => ({
+      pageParams: [1],
+      pages: [initialPokemonData],
+    }),
+    [initialPokemonData],
+  );
+
+  const { data: bookmarkedPokemon } = useBookmarks();
+  const bookmarkedPokemonIds: number[] = bookmarkedPokemon
+    ? bookmarkedPokemon.map((pokemon) => pokemon.id)
+    : [];
 
   const emptyData = {
     pageParams: [0],
@@ -119,6 +126,7 @@ export default function PokemonList({ initialPokemonData }: PokemonListProps) {
                   pokemon={pokemon}
                   key={pokemon.id}
                   className="w-40"
+                  bookmarkedPokemonIds={bookmarkedPokemonIds}
                 />
               ))}
             </div>

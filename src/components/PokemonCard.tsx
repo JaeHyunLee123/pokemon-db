@@ -2,26 +2,81 @@ import { cn } from "@/libs/utils";
 import { Pokemon } from "@/types/pokemon";
 import Image from "next/image";
 import Link from "next/link";
-import { ComponentProps, MouseEvent } from "react";
+import { ComponentProps, MouseEvent, useEffect, useState } from "react";
 import HeartIcon from "./icons/HeartIcon";
+import useAddBookmark from "@/hooks/api/useAddBookmark";
+import useDeleteBookmark from "@/hooks/api/useDeleteBookmark";
+import { useDebounce } from "@/hooks/useDebounce";
+import useUser from "@/hooks/api/useUser";
+import useToast from "@/hooks/useToast";
 
 interface PokemonCardProps extends Omit<ComponentProps<typeof Link>, "href"> {
   pokemon: Pokemon;
-  isBookmarked?: boolean;
-  onBookmarkToggle?: (pokemonId: number) => void;
+  bookmarkedPokemonIds?: number[];
 }
 
 export default function PokemonCard({
   pokemon,
-  isBookmarked = false,
-  onBookmarkToggle,
   className,
+  bookmarkedPokemonIds = [],
   ...props
 }: PokemonCardProps) {
+  const isServerBookmarked = bookmarkedPokemonIds.includes(pokemon.id);
+  const [isBookmarked, setIsBookmarked] = useState(isServerBookmarked);
+  const { data: user } = useUser();
+  const triggerToast = useToast();
+
+  // 서버 상태와 동기화 (최초 로드 및 뮤테이션 성공 시)
+  useEffect(() => {
+    setIsBookmarked(isServerBookmarked);
+  }, [isServerBookmarked]);
+
+  const [pendingAction, setPendingAction] = useState<"add" | "delete" | null>(
+    null,
+  );
+  const debouncedAction = useDebounce(pendingAction, 300);
+
+  const { mutate: addBookmark } = useAddBookmark();
+  const { mutate: deleteBookmark } = useDeleteBookmark();
+
+  // 디바운스된 액션이 있고, 현재 서버 상태와 다를 때만 API 호출
+  useEffect(() => {
+    if (debouncedAction === "add" && !isServerBookmarked) {
+      addBookmark(pokemon.id);
+    } else if (debouncedAction === "delete" && isServerBookmarked) {
+      deleteBookmark(pokemon.id);
+    }
+    setPendingAction(null);
+  }, [
+    debouncedAction,
+    addBookmark,
+    deleteBookmark,
+    pokemon.id,
+    isServerBookmarked,
+  ]);
+
   const handleBookmarkClick = (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    onBookmarkToggle?.(pokemon.id);
+
+    if (!user) {
+      triggerToast(
+        "error",
+        "로그인 필요 서비스",
+        "로그인 후 북마크를 사용할 수 있습니다.",
+      );
+
+      return;
+    }
+
+    const newStatus = !isBookmarked;
+    setIsBookmarked(newStatus); // Optimistic UI (Local State)
+
+    if (newStatus !== isServerBookmarked) {
+      setPendingAction(newStatus ? "add" : "delete");
+    } else {
+      setPendingAction(null); // 서버 상태로 돌아오면 취소
+    }
   };
 
   return (
@@ -69,4 +124,3 @@ export default function PokemonCard({
     </Link>
   );
 }
-
