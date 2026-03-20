@@ -87,19 +87,19 @@
     - 카드 내부 우측 상단(또는 하단)에 북마크 전용 버튼(또는 아이콘) 배치
     - 클릭 시의 페이지(`/pokemon/[id]`) 라우팅을 방지하기 위해 `e.preventDefault()`, `e.stopPropagation()` 처리
 
-- [ ] **2. 백엔드 계층 분리 (Repository & Service)**
-  - [ ] `src/repositories/bookmark-repository.ts` 생성
+- [x] **2. 백엔드 계층 분리 (Repository & Service)**
+  - [x] `src/repositories/bookmark-repository.ts` 생성
     - `findBookmark(userId, pokemonId)`: 단건 조회 (북마크 등록 여부 확인)
     - `createBookmark(userId, pokemonId)`: 북마크 추가
     - `deleteBookmark(userId, pokemonId)`: 북마크 취소
     - `findBookmarksByUserId(userId)`: 해당 유저의 북마크 포켓몬 목록 조회 (Join/Include 활용)
-  - [ ] `src/services/bookmark-services.ts` 생성
+  - [x] `src/services/bookmark-services.ts` 생성
     - `toggleBookmarkService`: 유저 존재 유무 검증 뒤 북마크 유무를 판단하여 추가/삭제 레포지토리 로직 분기 실행
     - `getUserBookmarksService`: 북마크 목록을 클라이언트에 맞게 포맷팅
 
-- [ ] **3. API 연결 및 인증 검증 로직**
-  - [ ] 클라이언트와 통신할 API Route 작성
-  - [ ] 북마크 토글 및 리스트 조회 요청 처리 과정에서의 로그인 토큰/세션 검증
+- [x] **3. API 연결 및 인증 검증 로직**
+  - [x] 클라이언트와 통신할 API Route 작성
+  - [x] 북마크 토글 및 리스트 조회 요청 처리 과정에서의 로그인 토큰/세션 검증
 
 - [ ] **4. 북마크 상태 관리 (Optimistic UI & 디바운스)**
   - [ ] 북마크 처리를 담당하는 커스텀 훅 작성
