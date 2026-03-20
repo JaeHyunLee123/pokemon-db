@@ -1,16 +1,20 @@
 import { bookmarkRepository } from "@/repositories/bookmark-repository";
 
 export const bookmarkService = {
-  async toggleBookmark(userId: number, pokemonId: number) {
+  async addBookmark(userId: number, pokemonId: number) {
     const bookmark = await bookmarkRepository.findBookmark(userId, pokemonId);
+    if (!bookmark) {
+      await bookmarkRepository.createBookmark(userId, pokemonId);
+    }
+    return { isBookmarked: true };
+  },
 
+  async removeBookmark(userId: number, pokemonId: number) {
+    const bookmark = await bookmarkRepository.findBookmark(userId, pokemonId);
     if (bookmark) {
       await bookmarkRepository.deleteBookmark(userId, pokemonId);
-      return { isBookmarked: false };
-    } else {
-      await bookmarkRepository.createBookmark(userId, pokemonId);
-      return { isBookmarked: true };
     }
+    return { isBookmarked: false };
   },
 
   async getUserBookmarks(userId: number) {
