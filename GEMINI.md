@@ -158,7 +158,7 @@
 
 ### 진행해야 할 일 (To-Do List)
 
-- [ ] **1. 포켓몬 데이터 페칭 API 훅 (`useGetPokemonByName`) 개발**
+- [x] **1. 포켓몬 데이터 페칭 API 훅 (`useGetPokemonByName`) 개발**
   - `/api/pokemon?name=[포켓몬이름]` API를 호출하는 Tanstack Query 커스텀 훅(`useGetPokemonByName`) 작성.
   - `useAISearch` 등 기존 프로젝트 내 API 훅의 형태와 에러 핸들링 패턴을 똑같이 참고하여 구현.
 - [ ] **2. 포켓몬 랜덤 추출 유틸리티 개발**
