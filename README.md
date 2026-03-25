@@ -22,12 +22,9 @@ NextJS와 Prisma를 사용한 포켓몬 정보 조회 웹사이트
 
 - Gemini API의 Context Window를 활용하여 데이터베이스 내의 포켓몬 목록 중 자연어 설명에 맞는 포켓몬을 검색
 - 백만 개 이상의 토큰 처리가 가능한 성능을 바탕으로, 할루시네이션(환각) 없는 정확한 검색 결과 JSON 반환
+- [구현 PR 링크](https://github.com/JaeHyunLee123/pokemon-db/pull/52)
 
-### 포켓몬 북마크
-
-- 사용자가 선호하는 포켓몬을 북마크하고 마이페이지에서 모아볼 수 있는 기능
-- 디바운싱(Debouncing) 및 Optimistic UI 기법을 적용하여 빠르고 안정적인 사용자 경험(UX) 제공
-- RESTful API 설계를 통한 명시적인 리소스 관리 (POST, DELETE)
+https://github.com/user-attachments/assets/65866e80-eedd-4673-93e8-288f6ca5c544
 
 ### Virtual List
 
