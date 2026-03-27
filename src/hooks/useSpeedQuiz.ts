@@ -10,7 +10,10 @@ export interface RoundResult {
   isCorrect: boolean;
 }
 
-export default function useSpeedQuiz(totalRounds: number = 10) {
+export default function useSpeedQuiz(
+  totalRounds: number = 10,
+  maxPokemonId: number = 151,
+) {
   const [status, setStatus] = useState<QuizStatus>("idle");
   const [currentRound, setCurrentRound] = useState<number>(1);
   const [pokemonsToGuess, setPokemonsToGuess] = useState<string[]>([]);
@@ -18,12 +21,12 @@ export default function useSpeedQuiz(totalRounds: number = 10) {
 
   // 1. 게임 시작 (초기화)
   const startGame = useCallback(() => {
-    const randomNames = getRandomPokemons(totalRounds);
+    const randomNames = getRandomPokemons(totalRounds, maxPokemonId);
     setPokemonsToGuess(randomNames);
     setCurrentRound(1);
     setResults([]);
     setStatus("playing");
-  }, [totalRounds]);
+  }, [totalRounds, maxPokemonId]);
 
   // 2. 라운드 채점 및 다음 단계 진행
   const submitAnswer = useCallback(
