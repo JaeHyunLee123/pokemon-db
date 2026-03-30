@@ -35,7 +35,12 @@ export default function useSpeedQuiz(
 
       const targetName = pokemonsToGuess[currentRound - 1];
       // 제출한 이름과 실제 포켓몬 이름 비교 (공백 제거 후 비교 등)
-      const isCorrect = targetName === submittedName.trim();
+      const normalize = (str: string) =>
+        str
+          .trim()
+          .replace(/[^a-zA-Z0-9\u3131-\uD79D]/g, "")
+          .toLowerCase();
+      const isCorrect = normalize(targetName) === normalize(submittedName);
 
       setResults((prev) => [
         ...prev,
