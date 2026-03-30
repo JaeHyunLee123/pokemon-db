@@ -18,43 +18,49 @@ export default function Header() {
     <header className="sticky w-full">
       <div className="bg-red-500 h-14" />
       <div className="bg-black py-2 flex items-center justify-between w-full flex-col sm:flex-row">
-        <div className="w-0 sm:w-[33%]" />
+        <div className="w-0 sm:w-[33%] flex items-center justify-center"></div>
 
-        <Link
-          href={"/"}
-          className="sm:w-[33%] flex items-center justify-center"
-        >
-          <h1 className="text-white font-semibold text-2xl">포켓몬 DB</h1>
-        </Link>
+        <div className="sm:w-[33%] flex items-center justify-center gap-4">
+          <Link href={"/"}>
+            <h1 className="text-white font-semibold text-2xl">포켓몬 DB</h1>
+          </Link>
+        </div>
 
-        {userData ? (
-          <div className="sm:w-[33%] flex items-center justify-end gap-2 pr-2">
-            <span className="text-white text-right">
-              logged in with {userData.email}
+        {/* 여기 레이아웃이 잘 적용이 안돼 */}
+        <div className="sm:w-[33%] flex flex-col items-center justify-end gap-3 pr-2 sm:flex-row">
+          <Link href={"/speed-quiz"}>
+            <span className="text-white bg-red-600 px-3 py-1 rounded-md text-sm font-bold shadow-md hover:bg-red-700 transition">
+              ⚡ 스피드 퀴즈
             </span>
-            <Link href="/mypage">
-              <Button>마이페이지</Button>
-            </Link>
-            <Button
-              disabled={isLogoutPending}
-              onClick={() => {
-                logout();
-              }}
-            >
-              로그아웃
-            </Button>
-          </div>
-        ) : (
-
-          <div className="sm:w-[33%] flex items-center justify-end gap-2 pr-2">
-            <Link href={"/login"} aria-label="login-page">
-              <Button>로그인</Button>
-            </Link>
-            <Link href={"/sign-up"} aria-label="sign-up-page">
-              <Button>회원가입</Button>
-            </Link>
-          </div>
-        )}
+          </Link>
+          {userData ? (
+            <>
+              <span className="text-white text-right">
+                logged in with {userData.email}
+              </span>
+              <Link href="/mypage">
+                <Button>마이페이지</Button>
+              </Link>
+              <Button
+                disabled={isLogoutPending}
+                onClick={() => {
+                  logout();
+                }}
+              >
+                로그아웃
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link href={"/login"} aria-label="login-page">
+                <Button>로그인</Button>
+              </Link>
+              <Link href={"/sign-up"} aria-label="sign-up-page">
+                <Button>회원가입</Button>
+              </Link>
+            </>
+          )}
+        </div>
       </div>
       <div className="bg-white h-14 flex justify-center items-center px-1">
         {pathname === "/" && <PokemonSearchInput />}
