@@ -17,15 +17,13 @@ export function getRandomPokemons(
   count: number = 10,
   maxPokemonId = DEFAULT_MAX_POKEMON_ID,
 ): string[] {
-  const names: string[] = pokemonNames as string[];
-  const selected = new Set<string>();
+  const namesPool: string[] = (pokemonNames as string[]).slice(0, maxPokemonId);
 
-  const maxCount = Math.min(count, maxPokemonId);
-
-  while (selected.size < maxCount) {
-    const randomIndex = Math.floor(Math.random() * maxPokemonId);
-    selected.add(names[randomIndex]);
+  // Fisher-Yates shuffle
+  for (let i = namesPool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [namesPool[i], namesPool[j]] = [namesPool[j], namesPool[i]];
   }
 
-  return Array.from(selected);
+  return namesPool.slice(0, Math.min(count, namesPool.length));
 }
