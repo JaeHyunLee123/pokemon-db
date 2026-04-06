@@ -1,24 +1,21 @@
 "use client";
 
 import Button from "@/components/common/Button";
+import { MobileSidebar } from "@/components/MobileSidebar";
 import PokemonSearchInput from "@/components/PokemonSearchInput";
 import useLogout from "@/hooks/api/useLogout";
 import useUser from "@/hooks/api/useUser";
-import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
 
 export default function Header() {
   const { data: userData } = useUser();
   const { mutate: logout, isPending: isLogoutPending } = useLogout();
   const pathname = usePathname();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const closeSidebar = () => setIsSidebarOpen(false);
 
   return (
-    <header className="sticky top-0 z-40 w-full shadow-md">
+    <MobileSidebar>
+      <header className="sticky top-0 z-40 w-full shadow-md">
       <div className="bg-red-500 h-10 md:h-14" />
       <div className="bg-black py-2 px-4 md:px-4 flex items-center justify-between w-full">
         {/* 좌측 영역: 데스크탑 좌측 메뉴 (스피드 퀴즈) & 모바일 빈 여백(타이틀 중앙 정렬용) */}
@@ -70,15 +67,7 @@ export default function Header() {
           </div>
 
           {/* 모바일 햄버거 메뉴 버튼 */}
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={() => setIsSidebarOpen(true)}
-              className="text-white p-1"
-              aria-label="Open sidebar"
-            >
-              <Menu size={28} />
-            </button>
-          </div>
+          <MobileSidebar.Trigger />
         </div>
       </div>
 
@@ -87,26 +76,10 @@ export default function Header() {
       </div>
 
       {/* 모바일 사이드바 */}
-      {isSidebarOpen && (
-        <div className="md:hidden">
-          {/* Dim Overlay */}
-          <div
-            className="fixed inset-0 bg-black/50 z-50"
-            onClick={closeSidebar}
-          />
-          {/* Sidebar Panel */}
-          <div className="fixed top-0 right-0 h-full w-64 bg-white z-50 shadow-xl flex flex-col p-5 gap-6">
-            <div className="flex justify-end">
-              <button
-                onClick={closeSidebar}
-                className="p-1 text-gray-500 hover:text-black"
-                aria-label="Close sidebar"
-              >
-                <X size={28} />
-              </button>
-            </div>
-
-            <Link href={"/speed-quiz"} onClick={closeSidebar}>
+      <MobileSidebar.Content>
+        {({ close }) => (
+          <>
+            <Link href={"/speed-quiz"} onClick={close}>
               <span className="flex justify-center text-white bg-red-600 px-4 py-3 rounded-md text-base font-bold shadow-md hover:bg-red-700 transition">
                 ⚡ 스피드 퀴즈
               </span>
@@ -117,7 +90,7 @@ export default function Header() {
                 <span className="text-center text-sm text-gray-600 break-all">
                   {userData.email}
                 </span>
-                <Link href="/mypage" className="w-full" onClick={closeSidebar}>
+                <Link href="/mypage" className="w-full" onClick={close}>
                   <Button className="w-full ">마이페이지</Button>
                 </Link>
                 <Button
@@ -125,7 +98,7 @@ export default function Header() {
                   disabled={isLogoutPending}
                   onClick={() => {
                     logout();
-                    closeSidebar();
+                    close();
                   }}
                 >
                   로그아웃
@@ -137,7 +110,7 @@ export default function Header() {
                   href={"/login"}
                   aria-label="login-page"
                   className="w-full"
-                  onClick={closeSidebar}
+                  onClick={close}
                 >
                   <Button className="w-full ">로그인</Button>
                 </Link>
@@ -145,15 +118,16 @@ export default function Header() {
                   href={"/sign-up"}
                   aria-label="sign-up-page"
                   className="w-full"
-                  onClick={closeSidebar}
+                  onClick={close}
                 >
                   <Button className="w-full ">회원가입</Button>
                 </Link>
               </div>
             )}
-          </div>
-        </div>
-      )}
+          </>
+        )}
+      </MobileSidebar.Content>
     </header>
+  </MobileSidebar>
   );
 }
