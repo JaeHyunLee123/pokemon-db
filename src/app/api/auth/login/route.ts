@@ -2,17 +2,30 @@ import { IncorrectPasswordError, NoUserError } from "@/errors/auth-error";
 import { LoginFormSchema } from "@/schemas/login-schema";
 import { authService } from "@/services/auth-services";
 import { NextRequest, NextResponse } from "next/server";
+import { loginRateLimiter } from "@/libs/rate-limiter";
 import z from "zod";
+import { getClientIp } from "@/libs/get-ip";
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = getClientIp(req);
+    await loginRateLimiter.consume(ip);
+    
     const json = await req.json();
 
     const { email, password } = LoginFormSchema.parse(json);
 
     await authService.login(email, password);
     return NextResponse.json({}, { status: 200 });
-  } catch (e) {
+  } catch (e: unknown) {
+    if (e && typeof e === "object" && "remainingPoints" in e) {
+        // RateLimiter Error object has remainingPoints
+        return NextResponse.json(
+            { message: "Too Many Requests" },
+            { status: 429 },
+        );
+    }
+
     // zod validation error
     if (e instanceof z.ZodError) {
       return NextResponse.json(
@@ -21,13 +34,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (e instanceof NoUserError) {
-      return NextResponse.json({ message: "No User" }, { status: 404 });
-    }
-
-    if (e instanceof IncorrectPasswordError) {
+    if (e instanceof NoUserError || e instanceof IncorrectPasswordError) {
       return NextResponse.json(
-        { message: "incorrect password" },
+        { message: "Invalid email or password" },
         { status: 401 },
       );
     }

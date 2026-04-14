@@ -25,9 +25,11 @@ export default function useLogin(options?: UseLoginOptions) {
       if (e.status === 400) {
         triggerToast("error", "로그인 실패", "올바르지 않은 형식입니다.");
       } else if (e.status === 401) {
-        triggerToast("error", "로그인 실패", "비밀번호가 틀렸습니다.");
-      } else if (e.status === 404) {
-        triggerToast("error", "로그인 실패", "해당 계정은 존재하지 않습니다.");
+        triggerToast(
+          "error",
+          "로그인 실패",
+          "이메일이나 비밀번호가 올바르지 않습니다.",
+        );
       } else {
         triggerToast(
           "error",

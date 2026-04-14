@@ -16,39 +16,42 @@ export default function useAISearch(options?: useAISearchOptions) {
   return useMutation({
     mutationFn: async (query: string) => {
       const res = await api.post<AISearchResponse>("/api/search/ai", { query });
-      
+
       if (res.data.error) {
         throw new Error(res.data.error);
       }
-      
+
       return res.data.pokemons;
     },
     onSuccess: () => {
-      triggerToast("success", "검색 완료", "요청하신 조건에 부합하는 포켓몬 목록을 가져왔습니다.");
+      triggerToast(
+        "success",
+        "검색 완료",
+        "요청하신 조건에 부합하는 포켓몬 목록을 가져왔습니다.",
+      );
     },
     onError: (e) => {
       if (e instanceof AxiosError) {
-        if (e.status === 400) {
+        const status = e.response?.status || e.status;
+        if (status === 400) {
+          triggerToast("error", "잘못된 요청", "검색어를 입력해주세요.");
+        } else if (status === 503) {
           triggerToast(
             "error",
-            "잘못된 요청",
-            "검색어를 입력해주세요."
+            "사용량 폭주",
+            "현재 AI 모델 사용량이 많아 요청이 지연되고 있습니다. 잠시 후 다시 시도해주세요.",
           );
         } else {
           triggerToast(
             "error",
             "검색 실패",
-            "AI 검색 서버에 문제가 발생했습니다. 잠시후 다시 시도해주세요."
+            "AI 검색 서버에 문제가 발생했습니다. 잠시후 다시 시도해주세요.",
           );
         }
       } else {
-        triggerToast(
-            "error",
-            "검색 실패",
-            "알 수 없는 에러가 발생했습니다."
-          );
+        triggerToast("error", "검색 실패", "알 수 없는 에러가 발생했습니다.");
       }
     },
-    ...options
+    ...options,
   });
 }
