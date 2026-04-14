@@ -4,10 +4,11 @@ import { authService } from "@/services/auth-services";
 import { NextRequest, NextResponse } from "next/server";
 import { loginRateLimiter } from "@/libs/rate-limiter";
 import z from "zod";
+import { getClientIp } from "@/libs/get-ip";
 
 export async function POST(req: NextRequest) {
   try {
-    const ip = req.headers.get("x-forwarded-for") || "127.0.0.1";
+    const ip = getClientIp(req);
     await loginRateLimiter.consume(ip);
     
     const json = await req.json();

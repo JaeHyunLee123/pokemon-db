@@ -4,12 +4,13 @@ import { authService } from "@/services/auth-services";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 import { signUpRateLimiter } from "@/libs/rate-limiter";
+import { getClientIp } from "@/libs/get-ip";
 
 const SignUpServerSchema = SignUpSchema.pick({ email: true, password: true });
 
 export async function POST(req: NextRequest) {
   try {
-    const ip = req.headers.get("x-forwarded-for") || "127.0.0.1";
+    const ip = getClientIp(req);
     await signUpRateLimiter.consume(ip);
 
     const json = await req.json();

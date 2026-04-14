@@ -1,18 +1,29 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-
-const SESSION_TOKEN_NAME = "session_token";
-const EXPIRE_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days
+import { SESSION_TOKEN_NAME, EXPIRE_DURATION } from "@/constants";
+import { decrypt, encrypt } from "@/libs/jwt";
 
 export async function middleware(request: NextRequest) {
   const sessionCookie = request.cookies.get(SESSION_TOKEN_NAME);
 
-  // 보호된 라우트에 대한 세션 검증
+  // 보호된 라우트에 대한 패턴
   const isProtectedRoute =
     request.nextUrl.pathname.startsWith("/mypage") ||
     request.nextUrl.pathname.startsWith("/api/bookmarks");
 
-  if (isProtectedRoute && !sessionCookie?.value) {
+  let payload = null;
+
+  // 1. 세션 쿠키가 존재한다면 복호화하여 JWT 유효성을 엄격하게 검증
+  if (sessionCookie?.value) {
+    try {
+      payload = await decrypt(sessionCookie.value);
+    } catch {
+      payload = null;
+    }
+  }
+
+  // 2. 보호된 라우트이면서 유효한 JWT payload가 없는 경우
+  if (isProtectedRoute && !payload) {
     if (request.nextUrl.pathname.startsWith("/api/")) {
       return NextResponse.json(
         { message: "Authentication required" },
@@ -22,14 +33,14 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // 1. response를 가로채서 다음 미들웨어나 핸들러로 보냄
   const response = NextResponse.next();
 
-  // 2. 세션이 있다면 만료시간(sliding) 연장
-  if (sessionCookie?.value) {
+  // 3. 세션 슬라이딩: 유효한 세션이 있다면 JWT 재발급(새 만료기한 확보)하여 응답 쿠키에 반영
+  if (payload && typeof payload === "object" && "userId" in payload) {
+    const newSessionToken = await encrypt(payload.userId as number);
     response.cookies.set({
       name: SESSION_TOKEN_NAME,
-      value: sessionCookie.value,
+      value: newSessionToken,
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       expires: new Date(Date.now() + EXPIRE_DURATION),

@@ -48,3 +48,6 @@ export const SESSION_SECRET_KEY = process.env.SESSION_SECRET_KEY;
 if (!SESSION_SECRET_KEY) {
   throw new Error("FATAL: SESSION_SECRET_KEY environment variable is not set");
 }
+
+export const SESSION_TOKEN_NAME = "session_token";
+export const EXPIRE_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days

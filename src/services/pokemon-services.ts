@@ -60,7 +60,7 @@ export const pokemonService = {
 
     // 3. Request completion (guaranteeing JSON response)
     // 간단한 인젝션 필터 보완
-    const safeQuery = query.substring(0, 200).replace(/["`{}[]]/g, "");
+    const safeQuery = query.substring(0, 200).replace(/["`{}[\]]/g, "");
 
     const result = await model.generateContent({
       contents: [
