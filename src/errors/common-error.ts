@@ -4,3 +4,10 @@ export class UnknownError extends Error {
     this.name = "UnknownError";
   }
 }
+
+export class NotFoundError extends Error {
+  constructor(message: string = "Not found") {
+    super(message);
+    this.name = "NotFoundError";
+  }
+}

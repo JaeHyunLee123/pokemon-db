@@ -3,11 +3,15 @@ import { SignUpSchema } from "@/schemas/sign-up-schema";
 import { authService } from "@/services/auth-services";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
+import { signUpRateLimiter } from "@/libs/rate-limiter";
 
 const SignUpServerSchema = SignUpSchema.pick({ email: true, password: true });
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get("x-forwarded-for") || "127.0.0.1";
+    await signUpRateLimiter.consume(ip);
+
     const json = await req.json();
 
     const { email, password } = SignUpServerSchema.parse(json);
@@ -15,11 +19,18 @@ export async function POST(req: NextRequest) {
     await authService.signUp(email, password);
 
     return NextResponse.json({}, { status: 201 });
-  } catch (e) {
+  } catch (e: any) {
     if (e instanceof UsedEmailError) {
       return NextResponse.json(
         { message: "Email already used" },
         { status: 409 },
+      );
+    }
+
+    if (e.remainingPoints !== undefined) {
+      return NextResponse.json(
+        { message: "Too Many Requests" },
+        { status: 429 },
       );
     }
 

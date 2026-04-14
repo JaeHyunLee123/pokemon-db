@@ -45,3 +45,6 @@ export const TYPE_COLORS: Record<string, string> = {
 } as const;
 
 export const SESSION_SECRET_KEY = process.env.SESSION_SECRET_KEY;
+if (!SESSION_SECRET_KEY) {
+  throw new Error("FATAL: SESSION_SECRET_KEY environment variable is not set");
+}

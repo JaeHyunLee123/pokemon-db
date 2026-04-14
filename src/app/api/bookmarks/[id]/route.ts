@@ -1,4 +1,5 @@
 import { NoSessionError } from "@/errors/auth-error";
+import { NotFoundError } from "@/errors/common-error";
 import { getSession } from "@/libs/session";
 import { bookmarkService } from "@/services/bookmark-services";
 import { NextRequest, NextResponse } from "next/server";
@@ -27,6 +28,12 @@ export async function POST(
     console.error(e);
     if (e instanceof NoSessionError) {
       return NextResponse.json({ message: "No session" }, { status: 401 });
+    }
+    if (e instanceof NotFoundError) {
+      return NextResponse.json(
+        { message: "Pokemon not found" },
+        { status: 404 },
+      );
     }
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }

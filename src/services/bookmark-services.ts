@@ -1,7 +1,12 @@
 import { bookmarkRepository } from "@/repositories/bookmark-repository";
+import { pokemonRepository } from "@/repositories/pokemon-repository";
+import { NotFoundError } from "@/errors/common-error";
 
 export const bookmarkService = {
   async addBookmark(userId: number, pokemonId: number) {
+    const pokemon = await pokemonRepository.findById(pokemonId);
+    if (!pokemon) throw new NotFoundError("Pokemon not found");
+
     const bookmark = await bookmarkRepository.findBookmark(userId, pokemonId);
     if (!bookmark) {
       await bookmarkRepository.createBookmark(userId, pokemonId);

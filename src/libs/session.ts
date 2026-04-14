@@ -49,20 +49,25 @@ export async function createSession(userId: number) {
 
 export async function getSession() {
   const session = (await cookies()).get(SESSION_TOKEN_NAME)?.value;
-  const payload = await decrypt(session);
-
-  if (!session || !payload) {
+  if (!session) return null;
+  try {
+    return await decrypt(session);
+  } catch (error) {
     return null;
   }
-
-  return payload;
 }
 
 export async function updateSession() {
   const session = (await cookies()).get(SESSION_TOKEN_NAME)?.value;
-  const payload = await decrypt(session);
+  if (!session) return null;
+  let payload;
+  try {
+    payload = await decrypt(session);
+  } catch (error) {
+    return null;
+  }
 
-  if (!session || !payload) {
+  if (!payload) {
     return null;
   }
 
@@ -71,7 +76,7 @@ export async function updateSession() {
   const cookieStore = await cookies();
   cookieStore.set(SESSION_TOKEN_NAME, session, {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
     expires: expires,
     sameSite: "lax",
     path: "/",
