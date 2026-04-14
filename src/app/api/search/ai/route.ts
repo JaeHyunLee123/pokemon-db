@@ -18,10 +18,10 @@ export async function POST(req: NextRequest) {
     const pokemons = await pokemonService.searchByAI(query);
 
     return NextResponse.json({ pokemons });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("AI Search Error:", error);
 
-    if (error.remainingPoints !== undefined) {
+    if (error && typeof error === "object" && "remainingPoints" in error) {
       return NextResponse.json(
         { error: "Too Many Requests" },
         { status: 429 }
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (error.status === 503) {
+    if (error && typeof error === "object" && "status" in error && error.status === 503) {
       return NextResponse.json(
         { error: "Service Unavailable (High Demand)" },
         { status: 503 }

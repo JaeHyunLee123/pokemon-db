@@ -52,7 +52,8 @@ export async function getSession() {
   if (!session) return null;
   try {
     return await decrypt(session);
-  } catch (error) {
+  } catch (e) {
+    console.error(e);
     return null;
   }
 }
@@ -63,7 +64,8 @@ export async function updateSession() {
   let payload;
   try {
     payload = await decrypt(session);
-  } catch (error) {
+  } catch (e) {
+    console.error(e);
     return null;
   }
 

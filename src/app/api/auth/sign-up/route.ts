@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     await authService.signUp(email, password);
 
     return NextResponse.json({}, { status: 201 });
-  } catch (e: any) {
+  } catch (e: unknown) {
     if (e instanceof UsedEmailError) {
       return NextResponse.json(
         { message: "Email already used" },
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (e.remainingPoints !== undefined) {
+    if (e && typeof e === "object" && "remainingPoints" in e) {
       return NextResponse.json(
         { message: "Too Many Requests" },
         { status: 429 },

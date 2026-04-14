@@ -16,8 +16,8 @@ export async function POST(req: NextRequest) {
 
     await authService.login(email, password);
     return NextResponse.json({}, { status: 200 });
-  } catch (e: any) {
-    if (e.remainingPoints !== undefined) {
+  } catch (e: unknown) {
+    if (e && typeof e === "object" && "remainingPoints" in e) {
         // RateLimiter Error object has remainingPoints
         return NextResponse.json(
             { message: "Too Many Requests" },
