@@ -5,6 +5,7 @@ import Button from "./common/Button";
 import useAISearch from "@/hooks/api/useAISearch";
 import Loading from "./common/Loading";
 import PokemonCard from "./PokemonCard";
+import posthog from "posthog-js";
 
 export default function AISearchForm() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +15,7 @@ export default function AISearchForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
+    posthog.capture("ai_search_submitted", { query });
     searchAI(query);
   };
 

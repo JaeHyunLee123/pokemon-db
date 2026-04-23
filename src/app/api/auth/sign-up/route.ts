@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 import { signUpRateLimiter } from "@/libs/rate-limiter";
 import { getClientIp } from "@/libs/get-ip";
+import { getPostHogClient } from "@/libs/posthog-server";
 
 const SignUpServerSchema = SignUpSchema.pick({ email: true, password: true });
 
@@ -18,6 +19,11 @@ export async function POST(req: NextRequest) {
     const { email, password } = SignUpServerSchema.parse(json);
 
     await authService.signUp(email, password);
+
+    const posthog = getPostHogClient();
+    posthog.identify({ distinctId: email, properties: { email } });
+    posthog.capture({ distinctId: email, event: "user_signed_up", properties: { email } });
+    await posthog.shutdown();
 
     return NextResponse.json({}, { status: 201 });
   } catch (e: unknown) {

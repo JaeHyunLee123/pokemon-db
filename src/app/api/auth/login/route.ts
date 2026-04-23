@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { loginRateLimiter } from "@/libs/rate-limiter";
 import z from "zod";
 import { getClientIp } from "@/libs/get-ip";
+import { getPostHogClient } from "@/libs/posthog-server";
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,6 +17,12 @@ export async function POST(req: NextRequest) {
     const { email, password } = LoginFormSchema.parse(json);
 
     await authService.login(email, password);
+
+    const posthog = getPostHogClient();
+    posthog.identify({ distinctId: email, properties: { email } });
+    posthog.capture({ distinctId: email, event: "user_logged_in", properties: { email } });
+    await posthog.shutdown();
+
     return NextResponse.json({}, { status: 200 });
   } catch (e: unknown) {
     if (e && typeof e === "object" && "remainingPoints" in e) {

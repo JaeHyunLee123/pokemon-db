@@ -9,6 +9,7 @@ import useDeleteBookmark from "@/hooks/api/useDeleteBookmark";
 import { useDebounce } from "@/hooks/useDebounce";
 import useUser from "@/hooks/api/useUser";
 import useToast from "@/hooks/useToast";
+import posthog from "posthog-js";
 
 interface PokemonCardProps extends Omit<ComponentProps<typeof Link>, "href"> {
   pokemon: Pokemon;
@@ -71,6 +72,12 @@ export default function PokemonCard({
 
     const newStatus = !isBookmarked;
     setIsBookmarked(newStatus); // Optimistic UI (Local State)
+
+    posthog.capture("bookmark_toggled", {
+      pokemon_id: pokemon.id,
+      pokemon_name: pokemon.name,
+      bookmarked: newStatus,
+    });
 
     if (newStatus !== isServerBookmarked) {
       setPendingAction(newStatus ? "add" : "delete");

@@ -2,6 +2,7 @@
 
 import Button from "@/components/common/Button";
 import { cn } from "@/libs/utils";
+import posthog from "posthog-js";
 
 export type DifficultyLevel = "EASY" | "MEDIUM" | "HARD";
 
@@ -90,7 +91,10 @@ export default function SpeedQuizIdle({
         </div>
 
         <Button
-          onClick={startGame}
+          onClick={() => {
+            posthog.capture("speed_quiz_started", { difficulty });
+            startGame();
+          }}
           className="w-full text-lg py-4 font-bold bg-blue-600 hover:bg-blue-700 transition"
         >
           도전 시작!
