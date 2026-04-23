@@ -3,6 +3,7 @@ import { api } from "@/libs/axios";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
+import posthog from "posthog-js";
 
 type UseLoginOptions = Omit<
   UseMutationOptions<unknown, AxiosError, { email: string; password: string }>,
@@ -17,7 +18,8 @@ export default function useLogin(options?: UseLoginOptions) {
     mutationFn: async ({ email, password }) => {
       await api.post("/api/auth/login", { email, password });
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
+      posthog.identify(variables.email, { email: variables.email });
       triggerToast("success", "로그인 성공", "로그인에 성공했습니다.");
       router.push("/");
     },

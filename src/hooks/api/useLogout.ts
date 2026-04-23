@@ -2,6 +2,7 @@ import useToast from "@/hooks/useToast";
 import { api } from "@/libs/axios";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import posthog from "posthog-js";
 
 type UseLogoutOptions = Omit<
   UseMutationOptions<unknown, AxiosError>,
@@ -16,6 +17,7 @@ export default function useLogout(options?: UseLogoutOptions) {
       await api.post("/api/auth/logout");
     },
     onSuccess: () => {
+      posthog.reset();
       triggerToast("success", "로그아웃 성공", "로그인 아웃에 성공했습니다.");
       window.location.reload();
     },

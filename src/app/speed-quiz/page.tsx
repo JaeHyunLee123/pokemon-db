@@ -9,6 +9,7 @@ import SpeedQuizIdle, {
 } from "@/components/speed-quiz/SpeedQuizIdle";
 import SpeedQuizPlaying from "@/components/speed-quiz/SpeedQuizPlaying";
 import SpeedQuizResult from "@/components/speed-quiz/SpeedQuizResult";
+import posthog from "posthog-js";
 
 const SPEED_QUIZ_ROUNDS = 10;
 const SPEED_QUIZ_TIMER = 10;
@@ -56,6 +57,17 @@ export default function SpeedQuizPage() {
     );
   }
 
+  const handleSubmitAnswer = (answer: string) => {
+    submitAnswer(answer);
+    if (currentRound >= totalRounds) {
+      posthog.capture("speed_quiz_completed", {
+        difficulty,
+        total_rounds: totalRounds,
+        correct_count: correctCount,
+      });
+    }
+  };
+
   if (status === "playing") {
     return (
       <SpeedQuizPlaying
@@ -63,7 +75,7 @@ export default function SpeedQuizPage() {
         totalRounds={totalRounds}
         isAllLoaded={isAllLoaded}
         pokemonUrl={pokemon?.frontImageUrl}
-        submitAnswer={submitAnswer}
+        submitAnswer={handleSubmitAnswer}
         timeLimit={SPEED_QUIZ_TIMER}
       />
     );
